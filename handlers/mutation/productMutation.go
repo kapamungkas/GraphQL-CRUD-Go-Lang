@@ -1,11 +1,11 @@
 package mutation
 
 import (
-	"graphql-todo/database"
-	"graphql-todo/entities"
-	"graphql-todo/repositories"
-	"graphql-todo/services"
-	"graphql-todo/types"
+	"graphql-product/database"
+	"graphql-product/entities"
+	"graphql-product/repositories"
+	"graphql-product/services"
+	"graphql-product/types"
 	"math/rand"
 	"time"
 
@@ -14,8 +14,8 @@ import (
 
 var db = database.ConnectDB()
 
-var todo_repository = repositories.NewTodoRepository(db)
-var todo_service = services.NewTodoService(todo_repository)
+var product_repository = repositories.NewProductRepository(db)
+var product_service = services.NewProductService(product_repository)
 
 var MutationType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "Mutation",
@@ -45,7 +45,7 @@ var MutationType = graphql.NewObject(graphql.ObjectConfig{
 					Info:  params.Args["info"].(string),
 					Price: params.Args["price"].(float64),
 				}
-				return todo_service.CreateTodo(product)
+				return product_service.CreateProduct(product)
 			},
 		},
 
@@ -89,7 +89,7 @@ var MutationType = graphql.NewObject(graphql.ObjectConfig{
 						break
 					}
 				}
-				return todo_service.UpdateTodo(id, product)
+				return product_service.UpdateProduct(id, product)
 			},
 		},
 
@@ -106,7 +106,7 @@ var MutationType = graphql.NewObject(graphql.ObjectConfig{
 			},
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				id, _ := params.Args["id"].(int)
-				return todo_service.DeleteTodo(id)
+				return product_service.DeleteProduct(id)
 			},
 		},
 	},

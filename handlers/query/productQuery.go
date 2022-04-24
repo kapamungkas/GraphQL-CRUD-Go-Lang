@@ -1,18 +1,18 @@
 package query
 
 import (
-	"graphql-todo/database"
-	"graphql-todo/repositories"
-	"graphql-todo/services"
-	"graphql-todo/types"
+	"graphql-product/database"
+	"graphql-product/repositories"
+	"graphql-product/services"
+	"graphql-product/types"
 
 	"github.com/graphql-go/graphql"
 )
 
 var db = database.ConnectDB()
 
-var todo_repository = repositories.NewTodoRepository(db)
-var todo_service = services.NewTodoService(todo_repository)
+var product_repository = repositories.NewProductRepository(db)
+var product_service = services.NewProductService(product_repository)
 
 var QueryType = graphql.NewObject(
 	graphql.ObjectConfig{
@@ -33,7 +33,7 @@ var QueryType = graphql.NewObject(
 					id, ok := p.Args["id"].(int)
 					if ok {
 						// Find product
-						return todo_service.GetByIDTodo(id)
+						return product_service.GetByIDProduct(id)
 					}
 					return nil, nil
 				},
@@ -45,7 +45,7 @@ var QueryType = graphql.NewObject(
 				Type:        graphql.NewList(types.ProductType),
 				Description: "Get product list",
 				Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-					return todo_service.GetAllTodo()
+					return product_service.GetAllProduct()
 				},
 			},
 		},

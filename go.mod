@@ -1,4 +1,4 @@
-module graphql-todo
+module graphql-product
 
 go 1.17
 

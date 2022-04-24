@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"graphql-todo/handlers/mutation"
-	"graphql-todo/handlers/query"
-	"graphql-todo/handlers/schema"
+	"graphql-product/handlers/mutation"
+	"graphql-product/handlers/query"
+	"graphql-product/handlers/schema"
 
 	"github.com/gin-gonic/gin"
 	"github.com/graphql-go/graphql"
@@ -24,9 +24,9 @@ func executeQuery(query string, schema graphql.Schema) *graphql.Result {
 func main() {
 	router := gin.Default()
 
-	schema := schema.NewTodoSchema(query.QueryType, mutation.MutationType)
+	schema := schema.NewProductSchema(query.QueryType, mutation.MutationType)
 
-	router.POST("/todo", func(c *gin.Context) {
+	router.POST("/product", func(c *gin.Context) {
 
 		Query := c.PostForm("query")
 

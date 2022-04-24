@@ -1,21 +1,21 @@
 package repositories
 
 import (
-	"graphql-todo/entities"
-	"graphql-todo/requests"
+	"graphql-product/entities"
+	"graphql-product/requests"
 
 	"gorm.io/gorm"
 )
 
-type TodoRepository interface {
-	GetAllTodo() (interface{}, error)
-	GetByIDTodo(id int) (interface{}, error)
-	CreateTodo(product entities.Product) (interface{}, error)
-	UpdateTodo(id int, product entities.Product) (interface{}, error)
-	DeleteTodo(id int) (interface{}, error)
+type ProductRepository interface {
+	GetAllProduct() (interface{}, error)
+	GetByIDProduct(id int) (interface{}, error)
+	CreateProduct(product entities.Product) (interface{}, error)
+	UpdateProduct(id int, product entities.Product) (interface{}, error)
+	DeleteProduct(id int) (interface{}, error)
 }
 
-type todoRepository struct {
+type productRepository struct {
 	databBase *gorm.DB
 }
 
@@ -40,11 +40,11 @@ var Products = []requests.Product{
 	},
 }
 
-func NewTodoRepository(databBase *gorm.DB) *todoRepository {
-	return &todoRepository{databBase}
+func NewProductRepository(databBase *gorm.DB) *productRepository {
+	return &productRepository{databBase}
 }
 
-func (t todoRepository) GetByIDTodo(id int) (interface{}, error) {
+func (t productRepository) GetByIDProduct(id int) (interface{}, error) {
 	// Find product
 	// fmt.Println(Products)
 	// for _, product := range Products {
@@ -61,23 +61,23 @@ func (t todoRepository) GetByIDTodo(id int) (interface{}, error) {
 	return product, err
 }
 
-func (t todoRepository) GetAllTodo() (interface{}, error) {
-	var todos []entities.Product
+func (t productRepository) GetAllProduct() (interface{}, error) {
+	var products []entities.Product
 
-	err := t.databBase.Find(&todos).Error
+	err := t.databBase.Find(&products).Error
 
-	return todos, err
+	return products, err
 
 	// fmt.Println(Products)
 	// return Products, nil
 }
 
-func (t todoRepository) CreateTodo(product entities.Product) (interface{}, error) {
+func (t productRepository) CreateProduct(product entities.Product) (interface{}, error) {
 	err := t.databBase.Create(&product).Error
 	return product, err
 }
 
-func (t todoRepository) UpdateTodo(id int, product entities.Product) (interface{}, error) {
+func (t productRepository) UpdateProduct(id int, product entities.Product) (interface{}, error) {
 	var products entities.Product
 
 	err := t.databBase.Model(&products).Where("id = ?", id).Updates(product).Error
@@ -85,7 +85,7 @@ func (t todoRepository) UpdateTodo(id int, product entities.Product) (interface{
 	return product, err
 }
 
-func (t todoRepository) DeleteTodo(id int) (interface{}, error) {
+func (t productRepository) DeleteProduct(id int) (interface{}, error) {
 	var products entities.Product
 
 	err := t.databBase.Where("id = ?", id).Delete(&products).Error
