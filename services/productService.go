@@ -3,16 +3,14 @@ package services
 import (
 	"graphql-product/entities"
 	"graphql-product/repositories"
-	"graphql-product/requests"
 )
 
 type ProductService interface {
-	GetByIDProduct(id int) (interface{}, error)
-	GetAllProduct() (interface{}, error)
-
-	CreateProduct(product requests.Product) (interface{}, error)
-	UpdateProduct(id int, product entities.Product) (interface{}, error)
-	DeleteProduct(id int) (interface{}, error)
+	GetByIDProduct(id int) (entities.Product, error)
+	GetAllProduct() ([]entities.Product, error)
+	CreateProduct(product entities.Product) (entities.Product, error)
+	UpdateProduct(id int, product entities.Product) (entities.Product, error)
+	DeleteProduct(id int) (entities.Product, error)
 }
 
 type productService struct {
@@ -23,26 +21,26 @@ func NewProductService(r repositories.ProductRepository) *productService {
 	return &productService{r}
 }
 
-func (s productService) GetByIDProduct(id int) (interface{}, error) {
+func (s productService) GetByIDProduct(id int) (entities.Product, error) {
 	return s.r.GetByIDProduct(id)
 }
 
-func (s productService) GetAllProduct() (interface{}, error) {
+func (s productService) GetAllProduct() ([]entities.Product, error) {
 	return s.r.GetAllProduct()
 }
 
-func (s productService) CreateProduct(product entities.Product) (interface{}, error) {
+func (s productService) CreateProduct(product entities.Product) (entities.Product, error) {
 	return s.r.CreateProduct(product)
 }
 
-func (s productService) UpdateProduct(id int, product entities.Product) (interface{}, error) {
-	_, err := s.r.UpdateProduct(id, product)
+func (s productService) UpdateProduct(id int, product entities.Product) (entities.Product, error) {
+	result, err := s.r.UpdateProduct(id, product)
 	if err == nil {
 		return s.r.GetByIDProduct(id)
 	}
-	return nil, err
+	return result, err
 }
 
-func (s productService) DeleteProduct(id int) (interface{}, error) {
+func (s productService) DeleteProduct(id int) (entities.Product, error) {
 	return s.r.DeleteProduct(id)
 }

@@ -71,23 +71,13 @@ var MutationType = graphql.NewObject(graphql.ObjectConfig{
 			},
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				id, _ := params.Args["id"].(int)
-				name, nameOk := params.Args["name"].(string)
-				info, infoOk := params.Args["info"].(string)
-				price, priceOk := params.Args["price"].(float64)
-				product := entities.Product{}
-				for _, p := range repositories.Products {
-					if int64(id) == p.ID {
-						if nameOk {
-							product.Name = name
-						}
-						if infoOk {
-							product.Info = info
-						}
-						if priceOk {
-							product.Price = price
-						}
-						break
-					}
+				name, _ := params.Args["name"].(string)
+				info, _ := params.Args["info"].(string)
+				price, _ := params.Args["price"].(float64)
+				product := entities.Product{
+					Name:  name,
+					Info:  info,
+					Price: price,
 				}
 				return product_service.UpdateProduct(id, product)
 			},
